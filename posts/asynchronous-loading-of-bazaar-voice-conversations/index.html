@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Asynchronous Loading of Bazaar Voice Conversations | Michael Clawson&#x27;s blog
+  </title>
+
+  <link rel="stylesheet" href="/css/main.css" />
+	<link rel="stylesheet" href="/css/posts.css" />
+
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav--wrapper">
+      <div class="nav--logo-wrapper">
+        <a class="nav--logo" href="/">
+          clawsonm
+        </a>
+      </div>
+      <ul class="nav--list">
+        <li class="nav--list-item">
+          <a href="/about/" class="nav--list-link">About</a>
+        </li>
+        <li class="nav--list-item">
+          <a href="/posts/" class="nav--list-link">Posts</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="page-wrapper">
+    <div class="page--header">
+<h1 class="post--title">Asynchronous Loading of Bazaar Voice Conversations</h1>
+    </div>
+    <div class="page--content">
+<article class="post">
+	<div class="post--info">
+		<h4 class="post--info-author">Michael Clawson</h4>
+		<p class="post--info-dates">Published: 2015-05-29  Modified: 2015-05-29</p>
+	</div>
+	<div class="post--body">
+		<h3 id="summary">Summary</h3>
+<p>Loading Bazaar Voice&#39;s Ratings and Reviews and Question and Answers asynchronously improved perceived performance on our product page (as measured by DOMContentLoaded) by ~200ms.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Our product page has recently garnered some attention in how it handles out of stock products. Since we load all variations of a product on the product page, variations and their stock status is handled by javascript. It took me quite by surprise that the Out of Stock message took ~1.2 seconds to appear on a nice computer. I wrote that code which just goes to show that if you don&#39;t hate the code you wrote 6 months ago you&#39;re not progressing as a developer. After hours (ahem) of pouring over network waterfall diagrams in Chrome, it was obvious that there was more than one mess to clean up here.</p>
+<p>We use requirejs to load our client side javascript asynchronously. But so many things were happening before render on this page that requirejs doesn&#39;t start loading our javascript until about 800ms, and it has to go through 3 rounds of downloading dependencies before it can bootstrap our javascript code.</p>
+<p>Obviously, for our product page this is not ideal. Parts of our javascript are required for the page to function, and parts are required for them to be able to add the product to cart. So long term solution will mean refactoring critical path javascript out and rewriting it to not depend on jQuery, and loading it with the page. Since we are hoping to rework our products functionality and design this summer that didn&#39;t seem like a good place to spend my time optimizing. So I looked at other things, hoping to decrease time to DOMContentLoaded.</p>
+<h2 id="fonts">Fonts</h2>
+<p>At first it seemed that our fonts were blocking rendering. Some were downloading at &lt;150ms, and some were downloading at ~300ms. Chrome was reporting bogus initiators for our fonts. It claimed either modernize, or some random line in the HTML, while the truth of it is the only place they are called is in our main css file.</p>
+<p>I was operating a little blindly so I decided to try a quick experiement. I loaded the fonts in an inline style tag in the header. But there was no difference. I tried a few other pages, both with the change and without the change, and there was also no change. Moreover, the fonts that were downloading later (300+ ms) were not blocking page render. On most other pages only one font downloaded before DOMContentLoaded. So time to scratch that approach.</p>
+<h2 id="bazaarvoice">BazaarVoice</h2>
+<p>This was pointed out to me as a possible cause by the bug reporter. We have implemented BazaarVoice&#39;s Conversations product: Ratings and Reviews, and Questions and Answers which are then syndicated to retailers websites as well as displayed our own. The problem is that their documentation sucks and we followed it. Their widgets were loading with the page, synchronously. Their initial script loaded two other scripts (one of which was a 1 MB javascript file) and a css file. It appeared that their css file was blocking page render, but after my fiasco with the fonts I&#39;m not as confident, but surely that 1 MB of javascript was slowing the browser down just by parsing it.</p>
+<p>So I read up on some articles on loading scripts asynchronously. And chose to use the async attribute on the script tag rather than trying to insert the script tag with javascript which is now considered bad practice. I toyed with the idea of inserting the BazaarVoice javascript from our requirejs loaded javascript, but I figured that would increase the users perception of the page load time because content would be loading for longer.</p>
+<p>What I did move to our require js loaded javascript was the calls to BazaarVoice&#39;s javascript API to instantiate the widgets. This works because they depended on a hardcoded element id, so the instantiation code&#39;s position doesn&#39;t matter.</p>
+<h2 id="results">Results</h2>
+<p>I tested my solution on several page loads in my dev environment and on our staging environment and found that DOMContentLoaded occurred between 180-250ms sooner than it did on production in my side by side comparisons. The page now takes longer to fully load, but in the spirit of progressive enhancement it&#39;s unnecessary features that are extending it.</p>
+<p>But what about our require js loaded javascript that is necessary for the page to function? It is also loaded much sooner. It is much more variable in how long it takes to load all three rounds of dependencies, but with DOMContentLoaded occuring sooner it starts sooner.</p>
+<p>I will update this with more results once this code goes live next week.</p>
+
+	</div>
+</article>
+    </div>
+    <div class="page--sidebar">
+      <div class="sidebar">
+      	<img src="https://pbs.twimg.com/profile_images/595123589763846144/EiyXjtyP_400x400.jpg" alt="Michael Clawson" class="sidebar--image" />
+      	<h1 class="sidebar--name">Michael Clawson</h1>
+      	<p class="sidebar--social">Follow me on Twitter: <a href="https://twitter.com/clawsonm" class="sidebar--handle">@clawsonm</a></p>
+      </div>    </div>
+  </div>
+  <footer class="footer">
+    &copy; 2015 Michael Clawson, Powered by <a href="http://www.metalsmith.io">Metalsmith</a>.
+  </footer>
+  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="http://localhost:35729/livereload.js"></script>
+
+  <script type="text/javascript">
+    WebFontConfig = {
+      google: { families: [ 'Lato:300,400,700,400italic,700italic:latin' ] }
+    };
+    (function() {
+      var wf = document.createElement('script');
+      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+      wf.type = 'text/javascript';
+      wf.async = 'true';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wf, s);
+    })();
+  </script>
+</body>
+</html>
