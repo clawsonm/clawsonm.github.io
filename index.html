@@ -9,6 +9,7 @@
   </title>
 
   <link rel="stylesheet" href="/css/main.css" />
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 
 </head>
 <body>
@@ -38,7 +39,7 @@
 	<div class="about--body">
 		<h2 id="about-me">About Me</h2>
 <p>I&#39;m a twenty something year old web developer living in Provo, Utah, working for Blendtec (<a href="http://www.blendtec.com">www.blendtec.com</a>). I&#39;m currently the lead developer, responsible for managing projects, organizing sprints, and setting technical direction for the dev team in conjunction with the Director of IT and our Digital Marketing Manager. I fight fires, go to meetings, fix bugs, and do most of the work for our sites and projects other than Blendtec.com.</p>
-<p>I am a full stack developer with all the pros and cons of that title (see <a href="http://andyshora.com/full-stack-developers.html">The Myth of the Full-stack Developer</a>). I can teach myself anything. I can do anything. I come from a more backend background, but I&#39;m currently having fun exploring Node, ES6/ES2015, React, etc.</p>
+<p>I am a full stack developer with all the pros and cons of that title (see <a href="http://andyshora.com/full-stack-developers.html">The Myth of the Full-stack Developer</a>). I have reached the point where I can do aynthing, learn anything, but I know so little of everything that it&#39;s humbling and sometimes more than a little scary. I come from a more backend background, but I&#39;m currently having fun exploring Node, ES6/ES2015, and JavaScript in general.</p>
 <p>First programming language was a BASIC interpreter copyright 1980 on an old TSR-80 Model 100 of my Dad&#39;s. I graduated to Visual Basic, and then Java, and C. Learned PHP for a job and been working in that language primarily since.</p>
 <p>When I was a teenager and people asked me how I became so good at computers I would flippantly respond: &quot;I read English.&quot; As I&#39;ve matured I&#39;ve realized that while that&#39;s technically true I also thirst for knowledge and quest for understanding and learn from the people around me. Shout outs are in order to my Dad, my older brother, my uncle, my first boss and my current boss.</p>
 <h2 id="education">Education</h2>
@@ -46,9 +47,9 @@
 <h2 id="work-experience">Work experience</h2>
 <p>First developement job was helping out a family friend. His daughters took dance with my little sisters. I was on summer break from college and helped him out with a few projects after teaching myself PHP. Those were the days of monolithic PHP files: one for each page, almost no includes.</p>
 <p>Served a two year fulltime mission for The Church of Jesus Christ of Latter-day Saints. When I came back I got a help desk job, but graduated up to a web programmer position in just a semester (this was a student job). This is where I first worked in an MVC environment (still PHP though). The largest project I worked on was the system that managed the university&#39;s student organizations, including automated Drupal installs, and CPanel access.</p>
-<p>When I left BYU I got lucky and found my current job at Blendtec. We make the world&#39;s most advanced blenders. I remember feeling so anxious that I would get a job where I didn&#39;t believe in the product. But I got lucky and not only got that but a boss and coworkers who believed in me and helped me to excel. Mostly we&#39;ve used <a href="http://www.cakephp.org">CakePHP</a>, but I&#39;ve also gained some experience with Django, and Wordpress. I&#39;ve written utility scripts in Bash, Python, PHP, and JavaScript, and deploy scripts in Bash, and Ruby.</p>
+<p>When I left BYU I got lucky and found my current job at Blendtec. We make the world&#39;s most advanced blenders. I remember feeling so anxious that I would get a job where I didn&#39;t believe in the product. But I got lucky and not only got that but a boss and coworkers who believed in me and helped me to excel. Mostly we&#39;ve used <a href="http://www.cakephp.org">CakePHP</a>, but I&#39;ve also gained some experience with Django, and Wordpress (because someone has to do it). I&#39;ve written utility scripts in Bash, Python, PHP, and JavaScript, and deploy scripts in Bash, and Ruby (Chef cookbooks).</p>
 <p>I&#39;ve helped to take our website from an FTP and Pray deploy strategy with no code standards to an automated Continuous Integration workflow including linting, code review, Jenkins CI, multple staging environments, single command, no down time deploy to production, etc. I&#39;ve helped move our infrastructure from a physical server, to ephemeral Amazon EC2 instances automated with Amazon OpsWorks and Chef cookbooks.</p>
-<p>I&#39;ve also worked on Blendtec&#39;s, as yet unpublished, iOS app. I was primary developer for an iOS 6/7 version of the app that was scratched, and assisted significantly on a newer version.</p>
+<p>I&#39;ve also worked on a couple unpublished iOS apps for Blendtec in iOS 6/7 and iOS 8 and soon iOS 9. </p>
 <h2 id="social">Social</h2>
 <p>Github: <a href="https://github.com/clawsonm">clawsonm</a></p>
 <p>Twitter: <a href="https://twitter.com/clawsonm">@clawsonm</a></p>
@@ -70,19 +71,15 @@
   <script src="/js/main.js"></script>
   <script src="http://localhost:35729/livereload.js"></script>
 
-  <script type="text/javascript">
-    WebFontConfig = {
-      google: { families: [ 'Lato:300,400,700,400italic,700italic:latin' ] }
-    };
-    (function() {
-      var wf = document.createElement('script');
-      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-      wf.type = 'text/javascript';
-      wf.async = 'true';
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(wf, s);
-    })();
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-65301801-1', 'auto');
+    ga('send', 'pageview');
+
   </script>
 </body>
 </html>
